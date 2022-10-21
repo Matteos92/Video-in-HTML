@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-// DVB//DTD XHTML DVB HTML 1.0//EN" "http://www.dvb.org/mhp/dvb/dvbhtml-1-0.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <style>
+     video {
+        display:        inline;
+        vertical-align: baseline;
+        border:         0px solid blue;
+     }
+     
+     body {
+         margin:            0px;
+         opacity:           100%;
+         background-color:  #0A0A0A; 
+     }
+    </style>
+    
+    <script>
+ 
+          var allEvents = [ "loadstart", "progress", "suspend", "abort", "error", "emptied",
+                        "stalled", "play", "pause", "loadedmetadata", "loadeddata", "waiting",
+                        "playing", "canplay", "canplaythrough", "seeking", "seeked", "timeupdate",
+                        "ended", "ratechange", "durationchange", "volumechange" ];
+      
+      var ADBPlayer  = null;
+      var logText       = "";
+      var logCtrl       = null;
+      
+      //  --------------------------------      
+      function handleEvent(event) 
+      {
+        logText = "[" + event.type + "]" + "duration="+ADBPlayer.duration+"; time="+ADBPlayer.currentTime+"; playbackRate="+ADBPlayer.playbackRate+"; paused="+ADBPlayer.paused+"; ended="+ADBPlayer.ended;
+        logCtrl.innerText = logText;
+      }
+ 
+      //  --------------------------------
+      function  initPlayers()
+      {
+        ADBPlayer = document.getElementById("ADBPlayer");
+          logCtrl = document.getElementById("logDiv");
+        for(var i=0; i<allEvents.length; i++) 
+        {
+          ADBPlayer.addEventListener(allEvents[i], handleEvent, false);
+        }
+      }
+      
+    </script>
+    
+    </head>
+  
+    <body onload="javascript:initPlayers();">
+  
+
+        <video width="1960px" height="1200px" id="ADBPlayer" controls="controls" autoplay="yes" src="http://172.31.230.8/test/video/KSW.mp4" loop="loop"></video>            
+
+    </body>
+
+
+
+
+</html>

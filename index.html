@@ -1,0 +1,108 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><style>
+body {
+  margin: 50px;
+  background-color: coral;
+}
+</style>
+
+
+<script type="text/javascript">
+if ("undefined" == typeof stb) {
+var stb = {};
+}
+stb.JSONExceptionHandler = function (exception) {
+}
+</script>
+<script type="text/javascript" src="adb.js"></script>
+
+<script>
+
+function load_new_page() {
+  //document.location.href = "http://www.google.pl";
+  document.location.href = "https://test-vectraportal.vectra.pl/";
+  //document.location.href = "http://www.pelos.pl";
+
+}
+
+
+function requestFullScreen () {
+  port = chrome.runtime.connectNative("com.adb.graphyne");
+  json = {};
+  json.function = "requestFullScreen";
+  port.postMessage(json);
+}
+
+function requestClose () {
+  port = chrome.runtime.connectNative("com.adb.graphyne");
+  json = {};
+  json.function = "CLOSE";
+  port.postMessage(json);
+}
+
+
+function get_parental() {
+  document.getElementById("parental_status").innerHTML = "Entered get_parental";
+  var parental = stb.settings.getValue("parental_rating");
+  document.getElementById("parental_status").innerHTML = "Got parental";
+  document.getElementById("parental_status").innerHTML = parental;
+}
+
+function get_smartcard() {
+  document.getElementById("smartcard_status").innerHTML = "Entered get_smartcard";
+  var smartcard_sn = stb.infoSvc.getTokenValue("var.vg_vod_cpeid");
+  document.getElementById("smartcard_status").innerHTML = smartcard_sn;
+}
+
+function check_pin() {
+  var pin_callback = new Object();
+  pin_callback.onInfoSvcActionResult = function onInfoSvcActionResult(result) {
+    document.getElementById("pin_status").innerHTML = "Entered pin_callback";
+    document.getElementById("pin_status").innerHTML = result.is_same + " "+ result.result_data;
+  };
+  document.getElementById("pin_status").innerHTML = "Entered check_pin";
+  stb.infoSvc.verifyTokenValue("cfg.system.pin", "1234", pin_callback);
+  //stb.infoSvc.verifyTokenValue("cfg.system.pin", "default", pin_callback);
+};
+
+function key_code(event) {
+  var key = event.keyCode;
+  document.getElementById("key_status").innerHTML = "KEY code is: " + key;
+  if (key == 133)
+  {
+    document.getElementById("key_status").innerHTML = "RED BUTTON DETECTED : " + key;
+    requestClose();
+  }
+  if (key == 117)
+  {
+    document.getElementById("key_status").innerHTML = "GREEN BUTTON DETECTED : " + key;
+    requestFullScreen ();
+  }
+
+}
+
+function onload_function() {
+  //setTimeout(load_new_page, 5000);
+  //setTimeout(requestFullScreen, 1000);
+  //setTimeout(requestClose, 1000);
+  setTimeout(get_parental, 1000);
+  setTimeout(check_pin, 2000);
+  setTimeout(get_smartcard, 3000);
+  document.getElementById("current_status").innerHTML = "Entered onload_function";
+}
+
+window.onload = onload_function;
+window.onkeydown = key_code;
+
+</script>
+
+</head><body>
+<h2>STB Browser API test page</h2>
+<h3 id="key_status">KEY code is:</h3>
+<h3 id="current_status">Entered onload_function</h3>
+<h3 id="parental_status">Entered get_parental</h3>
+<h3 id="pin_status">Entered check_pin</h3>
+<h3 id="smartcard_status">Entered get_smartcard</h3>
+
+
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<style>
+    html, body {
+        width: 800px;
+        height: 200px;
+        margin: 0px;
+        padding: 10px;
+    }
+
+</style>
+<script>
+function myFunction(event) {
+    var chCode = event.charCode;
+    var kCode = event.keyCode;
+    if (kCode == '403'){
+        document.getElementById("demo").innerHTML = "RED";
+        document.sendMessage("xionFullscreen");
+	setTimeout(load_new_page, 100);}
+//        document.getParentalLevel();}
+    else if (kCode == '404'){
+        document.getElementById("demo").innerHTML = "GREEN";
+	document.sendMessage("xionClose");}
+//	alert('GREEN button pressed!');}
+    else if (kCode == '405'){
+	document.getElementById("demo").innerHTML = "YELLOW";}
+    else if (kCode == '406'){
+        document.getElementById("demo").innerHTML = "BLUE";
+	show_image();}
+    else if (kCode == '112'){
+	document.getElementById("demo").innerHTML = "F1";
+	show_image();}
+    else {
+        document.getElementById("demo").innerHTML = kCode;}
+}
+
+function load_new_page() {
+    document.location.href = "http://172.31.230.8/test/video/video_IP_PPV_.html";
+}
+
+function show_image() {
+    var pic = document.getElementById("pic");
+    if (pic.style.visibility == "hidden"){
+        pic.style.visibility = "visible";}
+    else{
+        pic.style.visibility = "hidden";}
+}
+document.onkeydown = myFunction;
+</script>
+
+
+
+<!--<body style="background-color:blue">-->
+<p>
+Press RED to go fullscreen
+</p>
+<p>
+Press GREEN to display alert
+</p>
+<p>
+Press YELLOW for empty action
+</p>
+<p>
+Press BLUE for a surprise
+</p>
+<p id="demo"> </p>
+<!--<button type="button" onclick="show_image('banana.png', 50, 50, 'banana');" align="center">Click Me!</button>-->
+<img src="banana.gif" alt="banana.png" width="50" height="50" id="pic" style="visibility:hidden"/>
+
+</body>
+</html>
+
+
+
